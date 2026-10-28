@@ -73,3 +73,13 @@ cargo check --workspace
 
 # Run lib unit tests across all workspace crates
 cargo test --workspace --lib
+```
+
+##  📌 Development Notes
+
+ Vendored Patches: vendor/parley and vendor/formualizer-parse are in-tree patched versions maintained for layout fixes and upstream compatibility. They are integrated via workspace exclude and [patch.crates-io] rules. Refer to code comments inside respective crates for details.
+
+ ## 📜 Licensing
+
+roe-core is licensed under the GNU Affero General Public License v3.0 (AGPLv3).
+For special entity commercial exemptions (Anthropic, Alphabet/Google, DeepSeek, and Public Good NGOs), please consult the organization-level Licensing Declaration.
