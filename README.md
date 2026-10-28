@@ -1,43 +1,75 @@
-# roe
+<div align="center">
 
-Office 套件无头内核：文档模型、公式计算、渲染管线，不含任何 UI。
+# roe-core
 
-被 [`roe-desktop`](../roe-desktop)（slint 前台）通过路径依赖消费。
+**The Headless Core Engine of ROE Office (Rust Office Engine)**  
+*Pure Rust • Memory-Safe • Headless Document Kernel • Modular Crates*
 
-## Workspace 成员
-- `roe-model` — 核心数据模型
-- `roe-core` — 渲染/排版核心逻辑
-- `roe-parser` — OOXML 解析（docx/xlsx/pptx），quick-xml
-- `roe-calc` — Calc 公式引擎（formualizer + petgraph FormulaDAG）
-- `roe-writer` — Writer 排版（parley/taffy/cosmic-text）
-- `roe-impress` — Impress 渲染（rstar 空间索引 + charts-rs）
-- `roe-formula` — LaTeX 公式排版（RaTeX）
-- `roe-script` — Rhai 脚本引擎，含只读预览能力
-- `roe-polars-bridge` — Polars 数据桥接（透视表、DataFrame）
-- `roe-bridge-lok` / `roe-uno-compat` — 兼容层
-- `roe-export` — 导出（PDF 等）
-- `roe-api` — 对外 C-ABI facade，供 office-rs2 消费
-- `roe-agent` — Agent 能力（rig-core + rig-agent）
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Built with Rust](https://img.shields.io/badge/Rust-1.80%2B-orange.svg?logo=rust)](https://www.rust-lang.org/)
+[![Architecture: Headless](https://img.shields.io/badge/Architecture-Headless%20First-green.svg)](#architecture)
+[![UI Consumer](https://img.shields.io/badge/UI%20Frontend-roe--desktop-purple.svg)](https://github.com/roe-office/roe-desktop)
 
-## 技术栈
-- **formualizer** — Excel/OpenFormula 公式解析求值
-- **petgraph** — 公式依赖图
-- **rstar** — 空间索引
-- **parley** / **taffy** / **skrifa** / **swash** / **cosmic-text** — 文字排版
-- **RaTeX** — LaTeX 公式排版（vendored，`RaTeX/`）
-- **charts-rs** — 图表渲染（vendored，`charts-rs/`）
-- **tiny-skia** / **resvg** — 2D 光栅渲染
-- **quick-xml** — OOXML 解析
-- **rhai** — 脚本引擎
-- **rig-core** / **rig-agent** — Agent 框架（`roe-agent`）
+</div>
 
-## 编译
+---
+
+## 📖 Overview
+
+`roe-core` is the foundational headless computational engine of the ROE Office suite. It handles document parsing, memory data models, formula evaluation DAGs, typography layout, 2D vector rendering pipelines, and AI agent execution—**completely decoupled from any graphical user interface (GUI)**.
+
+It is primarily consumed by [`roe-desktop`](https://github.com/roe-office/roe-desktop) (the Slint-based desktop frontend) and can be leveraged independently for server-side document automation, batch rendering, or programmatic AI toolchains via C-ABI and MCP.
+
+---
+
+## 🏗️ Workspace Architecture
+
+The workspace is organized into modular, fine-grained Rust crates:
+
+| Crate | Responsibility | Key Dependencies |
+| :--- | :--- | :--- |
+| **`roe-model`** | Core document object models & state trees | `serde`, `serde_json` |
+| **`roe-core`** | Central orchestration, layout abstractions & 2D rendering pipeline | `tiny-skia`, `resvg` |
+| **`roe-parser`** | High-speed OOXML parsing (`.docx`, `.xlsx`, `.pptx`) | `quick-xml` |
+| **`roe-writer`** | Advanced text layout, line-breaking & paragraph flow | `parley`, `cosmic-text`, `taffy` |
+| **`roe-calc`** | Spreadsheet formula evaluation engine & recalculation graph | `formualizer`, `petgraph` (FormulaDAG) |
+| **`roe-impress`** | Presentation slide scene-graph & spatial spatial index | `rstar`, `charts-rs` |
+| **`roe-formula`** | LaTeX math formula parsing and KaTeX typography | `RaTeX` (in-tree) |
+| **`roe-script`** | Sandboxed, auditable scripting engine & read-only previews | `rhai` |
+| **`roe-polars-bridge`** | High-performance big data analytics & instant pivot tables | `polars` |
+| **`roe-api`** | Unified C-ABI facade (270+ functions) for multi-language consumers | C-ABI |
+| **`roe-agent`** | AI tool abstraction & native Agent integration | `rig-core`, `rig-agent` |
+| **`roe-export`** | Headless document export (PDF, HTML, etc.) | — |
+| **`roe-bridge-lok`** / **`roe-uno-compat`** | Compatibility layer inspired by LibreOfficeKit / UNO idioms | — |
+
+---
+
+## 🛠️ Technology Stack
+
+- **Calculation & Graph**:
+  - `formualizer`: Fast Excel / OpenFormula parser and evaluator.
+  - `petgraph`: Directed Acyclic Graph (DAG) for reactive formula dependency management.
+  - `rstar`: R*-tree spatial indexing for interactive presentation objects and hit-testing.
+- **Typography & Vector Graphics**:
+  - `parley` / `taffy` / `skrifa` / `swash` / `cosmic-text`: State-of-the-art modular font handling and layout.
+  - `RaTeX`: LaTeX mathematical formula typesetting rendered with KaTeX font metrics.
+  - `charts-rs`: Lightweight declarative charting and data visualization.
+  - `tiny-skia` / `resvg`: Pure software 2D rasterization without heavy GPU dependencies.
+- **Data & Automation**:
+  - `polars`: Columnar DataFrame computation engine for millions of rows.
+  - `quick-xml`: Zero-allocation streaming XML parsing for OOXML structures.
+  - `rhai`: Lightweight, sandboxed scripting language replacing legacy VBA.
+  - `rig-core`: Rust-native AI agent tool orchestrator.
+
+---
+
+## 🚀 Building & Testing
+
+Ensure you have a recent stable Rust toolchain installed (Rust 1.80+ recommended):
+
 ```bash
+# Check workspace compilation without generating binaries
 cargo check --workspace
-cargo test --workspace --lib
-```
 
-## 已知事项
-- `vendor/parley`、`vendor/formualizer-parse` 是本地修改版，通过
-  workspace `exclude` + `[patch.crates-io]` 接入，具体原因见各自
-  README/代码注释。
+# Run lib unit tests across all workspace crates
+cargo test --workspace --lib
