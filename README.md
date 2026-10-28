@@ -2,7 +2,7 @@
 
 Office 套件无头内核：文档模型、公式计算、渲染管线，不含任何 UI。
 
-被 [`office-rs2`](../office-rs2)（slint 前台）通过路径依赖消费。
+被 [`roe-desktop`](../roe-desktop)（slint 前台）通过路径依赖消费。
 
 ## Workspace 成员
 - `roe-model` — 核心数据模型
