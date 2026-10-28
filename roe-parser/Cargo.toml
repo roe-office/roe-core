@@ -1,0 +1,19 @@
+[package]
+name = "roe-parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-model  = { path = "../roe-model" }
+roe-polars-bridge = { path = "../roe-polars-bridge" }
+roe-formula = { path = "../roe-formula" }
+quick-xml  = { workspace = true }
+serde      = { workspace = true }
+serde_json = { workspace = true }
+zstd       = { workspace = true }
+base64     = { workspace = true }
+thiserror  = { workspace = true }
+zip        = { workspace = true }
+smallvec   = { workspace = true }
+csv = { workspace = true }
+encoding_rs = { workspace = true }

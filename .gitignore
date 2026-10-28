@@ -1,0 +1,27 @@
+/target
+**/target
+*.bak
+.DS_Store
+.env
+.env
+
+# 外部参考/vendor代码，不属于本workspace，各自带独立.git，不纳入版本控制
+RaTeX/
+charts-rs/
+
+# 手动.bak快照归档，git接管后不再需要，不纳入版本控制
+_archive/
+
+# LOK用例库+精选测试样本，体积大，属于外部测试数据资产，不纳入版本控制
+test_samples/
+vendor/
+
+# 各团队的会话进度交接文档，纯人工协作产物，不纳入版本控制
+ROE_Progress_v*.md
+roe-ext_progress_v*.md
+*.md.bak_before_*
+
+# 各类源码手动快照备份（形如 xxx.rs.bak_before_描述_时间戳），
+# 之前只有 *.md.bak_before_* 只覆盖.md文件，这里补上通用规则
+*.bak_before_*
+*.bak_*

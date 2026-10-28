@@ -1,0 +1,60 @@
+[package]
+name = "roe-agent"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+
+[[bin]]
+name = "roe-agent"
+path = "src/main.rs"
+
+[lib]
+name = "roe_agent"
+path = "src/lib.rs"
+
+[dependencies]
+# 同进程内部依赖：roe-agent 直接调用 roe-api 里抽出的 *_impl 函数
+# （架构决策见本文件 lib.rs 顶部注释：不跨 FFI 边界调用 C-ABI）
+roe-api    = { path = "../roe-api" }
+roe-parser = { path = "../roe-parser" }
+roe-model  = { path = "../roe-model" }
+# 仅用于 WorkspaceContext 实现 media_context::MediaAssetSource trait
+# （桥接给 set_slide_background 的 picture 分支读文件用），不引入
+# 反向依赖问题：这里是 roe-agent 依赖 roe-script，方向正确（roe-script
+# 依旧不知道 roe-agent 的存在）。
+roe-script = { path = "../roe-script" }
+
+# rig：LLM agent 框架。依赖顶层 facade crate（而非单独 rig-core），
+# 这样能拿到 .agent().tool().build() 这套 classic runtime API
+# （rig-agent 提供的 AgentClientExt），无需手写底层 completion 调用。
+rig-core  = { version = "0.42.0", default-features = false, features = ["rustls"] }
+rig-agent = { version = "0.42.0", default-features = false }
+
+tokio    = { version = "1", features = ["rt-multi-thread", "macros"] }
+futures  = { version = "0.3", default-features = false, features = ["std"] }
+dotenvy  = "0.15"
+serde       = { workspace = true }
+serde_json  = { workspace = true }
+thiserror   = { workspace = true }
+
+# Agent workspace（沙盒文件存取，ROE_Agent_Workspace_设计文档_v1.md）：
+# - cap-std：能力隔离的文件系统 API，workspace 内所有文件 IO 必须
+#   经过 cap_std::fs::Dir 实例，不允许直接用 std::fs 操作 workspace
+#   内路径（否则失去沙盒保证）。最新稳定版 4.0.2（Bytecode Alliance
+#   维护）。
+# - sha2：CAS（内容寻址存储）命名用，计算文件内容的 SHA-256 哈希作为
+#   文件名，天然去重。
+#
+# 本次 MVP 暂不引入文件类型探测（原计划的 infer/infer2，见设计文档
+# 三、3.6"魔术字节校验"）：这是安全加固项，不影响核心闭环是否能跑
+# 通，先跑通再决定要不要加。将来如果需要，应该引入社区维护的
+# infer2（原始 infer crate 已停止维护，infer2 是社区接手的 fork，
+# API 基本兼容，迁移成本低），不要引入已停更的原始 infer。
+cap-std = "4"
+sha2    = "0.10"
+
+[dev-dependencies]
+tempfile = "3"

@@ -1,0 +1,26 @@
+[package]
+name = "roe-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+slotmap    = { workspace = true }
+thiserror  = { workspace = true }
+tracing    = { workspace = true }
+serde     = { workspace = true }
+tiny-skia  = { workspace = true }
+parley      = { workspace = true }
+swash       = { workspace = true }
+skrifa      = { workspace = true }
+roe-model  = { path = "../roe-model" }
+smallvec   = { workspace = true }
+serde_json = { workspace = true }
+charts-rs  = { workspace = true }
+resvg      = { version = "0.47.0", default-features = false, features = ["text", "system-fonts"] }
+svgtypes   = "0.16.1"
+base64 = "0.22"
+image = "0.25"
+roe-parser = { path = "../roe-parser" }
+
+[dev-dependencies]
+roe-polars-bridge = { path = "../roe-polars-bridge" }

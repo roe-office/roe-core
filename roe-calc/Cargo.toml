@@ -1,0 +1,15 @@
+[package]
+name = "roe-calc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-core  = { path = "../roe-core" }
+roe-model = { path = "../roe-model" }
+petgraph  = { workspace = true }
+rayon     = { workspace = true }
+thiserror = { workspace = true }
+smallvec  = { workspace = true }
+formualizer-eval = "0.10.1"
+formualizer-common = "3.1.4"
+formualizer-parse = "3.1.4"

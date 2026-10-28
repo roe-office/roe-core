@@ -1,0 +1,24 @@
+[package]
+name = "roe-script"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-polars-bridge = { path = "../roe-polars-bridge" }
+polars = { version = "0.55", features = ["lazy", "csv", "dtype-full", "serde", "sql", "pivot"] }
+roe-model  = { path = "../roe-model" }
+roe-writer = { path = "../roe-writer" }
+roe-parser = { path = "../roe-parser" }
+roe-calc   = { path = "../roe-calc" }
+roe-core   = { path = "../roe-core" }
+parley     = { workspace = true }
+rhai       = { workspace = true }
+smallvec    = { workspace = true }
+serde_json = { workspace = true }
+thiserror  = { workspace = true }
+base64     = { workspace = true }
+pinyin = "0.11.0"
+roe-formula = { path = "../roe-formula" }
+
+[dev-dependencies]
+rhai = { workspace = true, features = ["metadata"] }

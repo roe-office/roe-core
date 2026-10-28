@@ -1,0 +1,26 @@
+[package]
+name = "roe-impress"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde     = { workspace = true }
+roe-core  = { path = "../roe-core" }
+roe-model = { path = "../roe-model" }
+parley      = { workspace = true }
+skrifa      = { workspace = true }
+swash       = { workspace = true }
+rstar     = { workspace = true }
+tiny-skia = { workspace = true }
+# PROOT-012b: 形状级blipFill图片解析出的图片不限于PNG（tdf112209样本是
+# JPEG），此前render_shape_image只用tiny_skia::Pixmap::decode_png，遇到
+# JPEG字节流直接解码失败返回，图片完全不显示。改用workspace已声明的
+# image crate（png+jpeg features，根Cargo.toml已配置，无需新增依赖版本）
+# 统一解码，再转换成tiny_skia::Pixmap供后续Pattern采样使用。
+image     = { workspace = true }
+thiserror = { workspace = true }
+tracing   = { workspace = true }
+charts-rs  = { workspace = true }
+keyframe   = { workspace = true }
+easer      = { workspace = true }
+resvg      = { version = "0.47.0", default-features = false, features = ["text", "system-fonts"] }

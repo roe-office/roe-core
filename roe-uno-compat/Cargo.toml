@@ -1,0 +1,8 @@
+[package]
+name = "roe-uno-compat"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-model = { path = "../roe-model" }
+thiserror = { workspace = true }

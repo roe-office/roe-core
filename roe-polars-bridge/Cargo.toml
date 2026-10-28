@@ -1,0 +1,15 @@
+[package]
+name = "roe-polars-bridge"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-model = { path = "../roe-model" }
+calamine = "0.35"
+rust_xlsxwriter = "0.95"
+polars = { version = "0.55", features = ["lazy", "csv", "dtype-full", "serde", "sql", "ipc", "parquet"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+smallvec = { workspace = true }
+thiserror = { workspace = true }
+encoding_rs = { workspace = true }

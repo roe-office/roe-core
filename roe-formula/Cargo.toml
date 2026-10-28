@@ -1,0 +1,13 @@
+[package]
+name = "roe-formula"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-model  = { path = "../roe-model" }
+thiserror  = { workspace = true }
+ratex-parser = { path = "../RaTeX/crates/ratex-parser" }
+ratex-types  = { path = "../RaTeX/crates/ratex-types" }
+ratex-font   = { path = "../RaTeX/crates/ratex-font" }
+ratex-lexer  = { path = "../RaTeX/crates/ratex-lexer" }
+ratex-layout = { path = "../RaTeX/crates/ratex-layout" }

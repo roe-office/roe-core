@@ -1,0 +1,29 @@
+[package]
+name = "roe-api"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+charts-rs = { workspace = true }
+image     = { workspace = true }
+roe-core    = { path = "../roe-core" }
+roe-model   = { path = "../roe-model" }
+roe-parser  = { path = "../roe-parser" }
+roe-script        = { path = "../roe-script" }
+roe-polars-bridge = { path = "../roe-polars-bridge" }
+roe-writer  = { path = "../roe-writer" }
+roe-impress = { path = "../roe-impress" }
+roe-calc    = { path = "../roe-calc" }
+roe-formula = { path = "../roe-formula" }  # 临时诊断依赖，验证完overbrace问题后可移除
+
+thiserror  = { workspace = true }
+serde       = { workspace = true }
+serde_json  = { workspace = true }
+smallvec    = { workspace = true }
+tiny-skia  = { workspace = true }
+parley      = { workspace = true }
+swash       = { workspace = true }
+pinyin = "0.11.0"

@@ -1,0 +1,22 @@
+[package]
+name = "roe-export"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+roe-model   = { path = "../roe-model" }
+roe-parser  = { path = "../roe-parser" }
+roe-impress = { path = "../roe-impress" }
+roe-core    = { path = "../roe-core" }
+
+serde       = { workspace = true }
+serde_json  = { workspace = true }
+thiserror   = { workspace = true }
+tiny-skia   = { workspace = true }
+
+# Hybrid PDF
+lopdf       = "0.34"
+flate2      = "1"
+
+# HTML 导出（模板）
+# 纯字符串拼接，不引入模板引擎依赖

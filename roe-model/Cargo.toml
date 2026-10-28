@@ -1,0 +1,11 @@
+[package]
+name = "roe-model"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde     = { workspace = true }
+slotmap   = { workspace = true }
+smallvec  = { workspace = true }
+ratex-types = { path = "../RaTeX/crates/ratex-types" }
+base64   = { workspace = true }
